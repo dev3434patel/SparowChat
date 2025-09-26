@@ -108,21 +108,17 @@
         <div class="spinner"></div>
         <p>Redirecting to standalone chat application...</p>
         
-        <a href="public/standalone.html" class="btn">Enter Chat Room</a>
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+            <a href="public/standalone.html" class="btn">Standalone Chat</a>
+            <a href="public/realtime.html" class="btn" style="background: linear-gradient(45deg, #10b981, #059669);">Real-time Chat</a>
+        </div>
     </div>
 
     <script>
-        // Auto-redirect after 3 seconds
+        // Auto-redirect after 3 seconds to real-time version
         setTimeout(() => {
-            window.location.href = 'public/standalone.html';
+            window.location.href = 'public/realtime.html';
         }, 3000);
-        
-        // Also redirect on click anywhere
-        document.addEventListener('click', (e) => {
-            if (e.target.tagName !== 'A') {
-                window.location.href = 'public/standalone.html';
-            }
-        });
     </script>
 </body>
 </html>

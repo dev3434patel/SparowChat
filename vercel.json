@@ -9,11 +9,15 @@
   "routes": [
     {
       "src": "/",
-      "dest": "/public/standalone.html"
+      "dest": "/public/realtime.html"
     },
     {
       "src": "/standalone",
       "dest": "/public/standalone.html"
+    },
+    {
+      "src": "/realtime",
+      "dest": "/public/realtime.html"
     },
     {
       "src": "/demo",
