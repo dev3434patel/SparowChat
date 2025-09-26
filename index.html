@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SparowTech Chat - Redirecting...</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>SparowTech Chat - Standalone</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -82,30 +81,42 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        .notice {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="logo">ST</div>
         <h1>SparowTech Chat</h1>
-        <p>Welcome to SparowTech Chat! This is a real-time anonymous chat application supporting up to 4 users with file sharing capabilities.</p>
+        <p>Welcome to SparowTech Chat! This is a standalone anonymous chat application that works without a server.</p>
+        
+        <div class="notice">
+            <strong>✨ Standalone Mode:</strong> This version works entirely in your browser using localStorage for data persistence. No server required!
+        </div>
         
         <div class="spinner"></div>
-        <p>Redirecting to chat application...</p>
+        <p>Redirecting to standalone chat application...</p>
         
-        <a href="public/index.html" class="btn">Enter Chat Room</a>
+        <a href="public/standalone.html" class="btn">Enter Chat Room</a>
     </div>
 
     <script>
         // Auto-redirect after 3 seconds
         setTimeout(() => {
-            window.location.href = 'public/index.html';
+            window.location.href = 'public/standalone.html';
         }, 3000);
         
         // Also redirect on click anywhere
         document.addEventListener('click', (e) => {
             if (e.target.tagName !== 'A') {
-                window.location.href = 'public/index.html';
+                window.location.href = 'public/standalone.html';
             }
         });
     </script>
