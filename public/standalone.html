@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1e3a8a">
     <title>SparowTech Chat - Standalone</title>
     <link rel="icon" type="image/png" href="white icon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -22,7 +26,7 @@
             line-height: 1.5;
         }
         
-        .min-h-screen { min-height: 100vh; }
+        .min-h-screen { min-height: 100vh; min-height: calc(var(--vh, 1vh) * 100); }
         .flex { display: flex; }
         .items-center { align-items: center; }
         .justify-center { justify-content: center; }
@@ -37,6 +41,9 @@
         .space-y-3 > * + * { margin-top: 0.75rem; }
         .space-y-2 > * + * { margin-top: 0.5rem; }
         .space-y-1 > * + * { margin-top: 0.25rem; }
+        
+        /* Fix for space-y-2 in flex containers */
+        .space-y-2 > *:not(:first-child) { margin-top: 0.5rem; }
         .space-x-3 > * + * { margin-left: 0.75rem; }
         .space-x-2 > * + * { margin-left: 0.5rem; }
         .space-x-1 > * + * { margin-left: 0.25rem; }
@@ -85,6 +92,7 @@
         .bg-gray-900 { background-color: #111827; }
         .bg-gray-800 { background-color: #1f2937; }
         .bg-gray-700 { background-color: #374151; }
+        .bg-gray-700\/50 { background-color: rgba(55, 65, 81, 0.5); }
         .bg-gray-600 { background-color: #4b5563; }
         .bg-blue-600 { background-color: #2563eb; }
         .bg-blue-500 { background-color: #3b82f6; }
@@ -174,7 +182,9 @@
         .hover\:text-white:hover { color: #ffffff; }
         .hover\:text-blue-300:hover { color: #93c5fd; }
         .hover\:text-red-300:hover { color: #fca5a5; }
+        .hover\:text-yellow-300:hover { color: #fde68a; }
         .hover\:bg-red-600\/10:hover { background-color: rgba(220, 38, 38, 0.1); }
+        .hover\:bg-yellow-600\/10:hover { background-color: rgba(217, 119, 6, 0.1); }
         
         .disabled\:opacity-50:disabled { opacity: 0.5; }
         .disabled\:cursor-not-allowed:disabled { cursor: not-allowed; }
@@ -244,6 +254,70 @@
             .lg\:hidden { display: block; }
         }
         
+        /* Enhanced mobile responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+                max-width: calc(100% - 20px);
+            }
+            
+            .message-bubble {
+                max-width: 85%;
+                font-size: 0.9rem;
+            }
+            
+            .user-avatar {
+                width: 1.5rem;
+                height: 1.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .text-4xl { font-size: 1.875rem; line-height: 2.25rem; }
+            .text-3xl { font-size: 1.5rem; line-height: 2rem; }
+            
+            .p-8 { padding: 1.5rem; }
+            .p-6 { padding: 1rem; }
+            .mb-8 { margin-bottom: 1.5rem; }
+            
+            /* Better touch targets */
+            button, .btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            input, textarea {
+                min-height: 44px;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                margin: 5px;
+                max-width: calc(100% - 10px);
+            }
+            
+            .message-bubble {
+                max-width: 90%;
+                font-size: 0.85rem;
+                padding: 0.5rem 0.75rem;
+            }
+            
+            .text-4xl { font-size: 1.5rem; line-height: 2rem; }
+            .text-3xl { font-size: 1.25rem; line-height: 1.75rem; }
+            
+            .p-8 { padding: 1rem; }
+            .p-6 { padding: 0.75rem; }
+            .mb-8 { margin-bottom: 1rem; }
+            
+            .btn {
+                padding: 12px 24px;
+                font-size: 0.9rem;
+            }
+        }
+        
         /* Custom animations */
         .animate-bounce {
             animation: bounce 1s infinite;
@@ -261,6 +335,38 @@
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
+        }
+        
+        /* Message animations */
+        .message-enter {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: messageEnter 0.3s ease forwards;
+        }
+        
+        @keyframes messageEnter {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Mobile sidebar overlay */
+        @media (max-width: 1023px) {
+            #sidebar.mobile-open {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 40;
+                transform: translateX(0);
+            }
+            
+            #sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
         }
         
         /* Custom styles for standalone app */
@@ -383,7 +489,7 @@
             
             <div class="standalone-notice">
                 <i class="fas fa-info-circle"></i>
-                <strong>Standalone Mode:</strong> This version works without a server using localStorage for persistence.
+                <strong>Standalone Mode:</strong> This version works without a server. Each session starts fresh - no auto-copying of previous messages.
             </div>
             
             <form id="join-form" class="space-y-6">
@@ -417,7 +523,7 @@
 
             <div class="mt-8 text-center text-gray-500 text-sm">
                 <p><i class="fas fa-shield-alt mr-1"></i> Anonymous & Private</p>
-                <p><i class="fas fa-database mr-1"></i> Data stored locally</p>
+                <p><i class="fas fa-refresh mr-1"></i> Fresh session each time</p>
             </div>
         </div>
     </div>
@@ -431,7 +537,7 @@
                     <i class="fas fa-comments mr-2"></i>
                     SparowTech Chat Room
                 </h2>
-                <p class="text-gray-400 text-sm">Standalone • Local Storage</p>
+                <p class="text-gray-400 text-sm">Standalone • Fresh Session</p>
             </div>
             
             <div class="flex-1 p-4">
@@ -444,7 +550,11 @@
                 </div>
             </div>
 
-            <div class="p-4 border-t border-gray-700">
+            <div class="p-4 border-t border-gray-700 space-y-2">
+                <button id="clear-history" class="w-full py-2 px-4 text-yellow-400 hover:text-yellow-300 hover:bg-yellow-600/10 rounded-lg transition-colors duration-300">
+                    <i class="fas fa-trash mr-2"></i>
+                    Clear Chat History
+                </button>
                 <button id="leave-chat" class="w-full py-2 px-4 text-red-400 hover:text-red-300 hover:bg-red-600/10 rounded-lg transition-colors duration-300">
                     <i class="fas fa-sign-out-alt mr-2"></i>
                     Leave Chat
@@ -522,10 +632,39 @@
             }
 
             init() {
-                this.bindEvents();
-                this.setupAutoResize();
-                this.checkExistingSession();
-                this.loadStoredData();
+                try {
+                    this.bindEvents();
+                    this.setupAutoResize();
+                    this.checkExistingSession();
+                    this.loadStoredData();
+                    this.setupCrossPlatformCompatibility();
+                } catch (error) {
+                    console.error('Error initializing chat app:', error);
+                    this.showError('Failed to initialize chat application. Please refresh the page.');
+                }
+            }
+            
+            setupCrossPlatformCompatibility() {
+                // Ensure localStorage is available
+                if (typeof Storage === "undefined") {
+                    this.showError('Local storage is not supported in this browser.');
+                    return;
+                }
+                
+                // Handle viewport height issues on mobile browsers
+                this.setViewportHeight();
+                window.addEventListener('resize', () => this.setViewportHeight());
+                
+                // Handle orientation changes
+                window.addEventListener('orientationchange', () => {
+                    setTimeout(() => this.setViewportHeight(), 100);
+                });
+            }
+            
+            setViewportHeight() {
+                // Fix for mobile browsers with dynamic viewport
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
             }
 
             bindEvents() {
@@ -551,6 +690,10 @@
 
                 document.getElementById('leave-chat').addEventListener('click', () => {
                     this.leaveChat();
+                });
+
+                document.getElementById('clear-history').addEventListener('click', () => {
+                    this.clearChatHistory();
                 });
 
                 document.getElementById('toggle-sidebar').addEventListener('click', () => {
@@ -590,9 +733,14 @@
                     return;
                 }
 
-                // Create user
+                // Clear any existing data to start fresh
+                this.clearSessionData();
+                this.messages = [];
+                this.users = [];
+
+                // Create new user with unique ID
                 this.currentUser = {
-                    id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                    id: 'user_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11),
                     displayName: displayName,
                     joinedAt: new Date().toISOString()
                 };
@@ -606,6 +754,9 @@
                 
                 this.showChatInterface();
                 this.addSystemMessage(`${displayName} joined the chat`, 'join');
+                
+                // Clear the input field
+                document.getElementById('display-name').value = '';
             }
 
             showChatInterface() {
@@ -618,10 +769,10 @@
                 const input = document.getElementById('message-input');
                 const content = input.value.trim();
                 
-                if (!content) return;
+                if (!content || !this.currentUser) return;
 
                 const message = {
-                    id: 'msg_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                    id: 'msg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11),
                     userId: this.currentUser.id,
                     displayName: this.currentUser.displayName,
                     content: content,
@@ -767,13 +918,66 @@
             toggleSidebar() {
                 const sidebar = document.getElementById('sidebar');
                 sidebar.classList.toggle('mobile-open');
+                
+                // Close sidebar when clicking outside on mobile
+                if (sidebar.classList.contains('mobile-open')) {
+                    document.addEventListener('click', this.closeSidebarOnOutsideClick);
+                } else {
+                    document.removeEventListener('click', this.closeSidebarOnOutsideClick);
+                }
+            }
+            
+            closeSidebarOnOutsideClick = (e) => {
+                const sidebar = document.getElementById('sidebar');
+                const toggleButton = document.getElementById('toggle-sidebar');
+                
+                if (!sidebar.contains(e.target) && e.target !== toggleButton) {
+                    sidebar.classList.remove('mobile-open');
+                    document.removeEventListener('click', this.closeSidebarOnOutsideClick);
+                }
+            }
+
+            clearChatHistory() {
+                if (confirm('Are you sure you want to clear all chat history? This cannot be undone.')) {
+                    try {
+                        // Clear messages from display
+                        const container = document.getElementById('messages-container');
+                        if (container) {
+                            container.innerHTML = '';
+                        }
+                        
+                        // Clear messages from memory
+                        this.messages = [];
+                        
+                        // Clear from localStorage
+                        localStorage.removeItem('standaloneChatData');
+                        
+                        // Add a system message
+                        this.addSystemMessage('Chat history cleared', 'join');
+                    } catch (error) {
+                        console.error('Error clearing chat history:', error);
+                        this.showError('Failed to clear chat history. Please try again.');
+                    }
+                }
             }
 
             leaveChat() {
                 if (confirm('Are you sure you want to leave the chat?')) {
+                    // Clear all data
                     this.clearSessionData();
-                    this.saveData();
-                    location.reload();
+                    localStorage.removeItem('standaloneChatData');
+                    
+                    // Reset the app state
+                    this.currentUser = null;
+                    this.users = [];
+                    this.messages = [];
+                    
+                    // Show landing page
+                    document.getElementById('chat-interface').classList.add('hidden');
+                    document.getElementById('landing-page').classList.remove('hidden');
+                    
+                    // Clear the display name input
+                    document.getElementById('display-name').value = '';
                 }
             }
 
@@ -799,7 +1003,7 @@
             getOrCreateSessionId() {
                 let sessionId = sessionStorage.getItem('chatSessionId');
                 if (!sessionId) {
-                    sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
                     sessionStorage.setItem('chatSessionId', sessionId);
                 }
                 return sessionId;
@@ -820,53 +1024,31 @@
             }
 
             checkExistingSession() {
-                const sessionData = sessionStorage.getItem('chatSessionData');
-                if (sessionData) {
-                    try {
-                        const data = JSON.parse(sessionData);
-                        // Auto-rejoin with stored session data
-                        this.currentUser = {
-                            id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
-                            displayName: data.displayName,
-                            joinedAt: new Date().toISOString()
-                        };
-                        this.users = [this.currentUser];
-                        this.showChatInterface();
-                        this.updateUsersList();
-                        this.addSystemMessage(`${data.displayName} rejoined the chat`, 'join');
-                    } catch (e) {
-                        console.error('Error parsing session data:', e);
-                        this.clearSessionData();
-                    }
-                }
+                // Don't auto-rejoin on refresh - let user manually join
+                // This prevents the auto-copying issue
+                return;
             }
 
             // Data persistence methods
             saveData() {
-                const data = {
-                    messages: this.messages,
-                    users: this.users,
-                    timestamp: new Date().toISOString()
-                };
-                localStorage.setItem('standaloneChatData', JSON.stringify(data));
+                try {
+                    const data = {
+                        messages: this.messages,
+                        users: this.users,
+                        timestamp: new Date().toISOString()
+                    };
+                    localStorage.setItem('standaloneChatData', JSON.stringify(data));
+                } catch (error) {
+                    console.error('Error saving data:', error);
+                    // Continue without saving if localStorage fails
+                }
             }
 
             loadStoredData() {
-                const data = localStorage.getItem('standaloneChatData');
-                if (data) {
-                    try {
-                        const parsed = JSON.parse(data);
-                        this.messages = parsed.messages || [];
-                        this.users = parsed.users || [];
-                        
-                        // Load messages if we're in chat interface
-                        if (document.getElementById('chat-interface').classList.contains('hidden') === false) {
-                            this.loadMessages();
-                        }
-                    } catch (e) {
-                        console.error('Error loading stored data:', e);
-                    }
-                }
+                // Don't auto-load old messages to prevent copying issues
+                // Start fresh each time for better user experience
+                this.messages = [];
+                this.users = [];
             }
 
             loadMessages() {

@@ -538,7 +538,7 @@ class ChatApp {
     getOrCreateSessionId() {
         let sessionId = sessionStorage.getItem('chatSessionId');
         if (!sessionId) {
-            sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
             sessionStorage.setItem('chatSessionId', sessionId);
         }
         return sessionId;
